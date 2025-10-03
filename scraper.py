@@ -6,7 +6,7 @@ import pandas as pd
 from datetime import date
 
 urls = ['https://tv-program.sk/dajto/', 'https://tv-program.sk/prima-sk/', 'https://tv-program.sk/markiza-krimi/']
-filename = "shows.csv"
+filename = "shows2.csv"
 
 
 def scrape(url: str) -> pd.DataFrame:
@@ -39,9 +39,15 @@ def scrape(url: str) -> pd.DataFrame:
             if regex_match:
                 year = regex_match.group(0)
 
+        show_rating_container = detail_page.find("div", {"class": "text-center bg-warning mx-n3 mx-lg-n4 px-3 px-lg-4 py-3"});
+        if(show_rating_container):
+            rating_percentage_container = show_rating_container.find("div", {"class": "h3 mb-0"});
+            if(rating_percentage_container):
+                rating_percentage = rating_percentage_container.get_text(strip=True);
+
         collected_shows.append(
             {"channel": url.rstrip("/").split("/")[-1], "date": date.today(), "start": film[1].get_text(strip=True),
-             "title": film[0].get_text(strip=True), "year": year})
+             "title": film[0].get_text(strip=True), "rating": rating_percentage, "year": year})
     return pd.DataFrame(collected_shows)
 
 
