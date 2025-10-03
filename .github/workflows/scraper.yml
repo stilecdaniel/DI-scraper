@@ -3,8 +3,11 @@ name: Daily TV Scraper
 on:
   schedule:
     - cron: "0 4 * * *"  # UTC time
-  workflow_dispatch:  # allows manual trigger
+  workflow_dispatch: # allows manual trigger
 
+permissions:
+  contents: write
+  
 jobs:
   scrape:
     runs-on: ubuntu-latest
