@@ -6,7 +6,7 @@ import pandas as pd
 from datetime import date
 
 urls = ['https://tv-program.sk/dajto/', 'https://tv-program.sk/prima-sk/', 'https://tv-program.sk/markiza-krimi/']
-filename = "shows2.csv"
+filename = "shows.csv"
 
 
 def scrape(url: str) -> pd.DataFrame:
