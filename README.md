@@ -7,7 +7,8 @@ The scraper collects:
 - Channel name  
 - Date  
 - Start time  
-- Show title  
+- Show title
+- Rating  
 - Year of production (if available)  
 
 and saves it into a CSV file for further analysis or use in APIs.
@@ -25,11 +26,11 @@ pip install -r requirements.txt
 python scraper.py
 ```
 ## 📄 Example CSV output
-| channel | date       | start | title         | year |
-| ------- | ---------- | ----- | ------------- | ---- |
-| dajto   | 2025-10-02 | 05:05 | Oggy a šváby  | 2021 |
-| dajto   | 2025-10-02 | 06:00 | Je to možné?! |      |
-| dajto   | 2025-10-02 | 06:55 | Susedia       | 2019 |
+| channel | date       | start | title         |rating | year |
+| ------- | ---------- | ----- | ------------- | ----- | ---- |
+| dajto   | 2025-10-02 | 05:05 | Oggy a šváby  |  76%  | 2021 |
+| dajto   | 2025-10-02 | 06:00 | Je to možné?! |  63%  |      |
+| dajto   | 2025-10-02 | 06:55 | Susedia       |  82%  | 2019 |
 
 ## 🤖 GitHub Actions Automation
 
