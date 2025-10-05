@@ -1,0 +1,642 @@
+{
+  "team_info": {
+    "team_name": "Team_DataScience_02",
+    "exported_at": "2025-10-05T20:20:06.331658",
+    "api_source": "http://54.172.130.65:5001",
+    "total_programs": 79
+  },
+  "programs": [
+    {
+      "channel": "dajto",
+      "date": "2025-10-05",
+      "rating": "72%",
+      "start": "05:00",
+      "title": "Zig a Sharko",
+      "year": 2023.0
+    },
+    {
+      "channel": "dajto",
+      "date": "2025-10-05",
+      "rating": "62%",
+      "start": "06:00",
+      "title": "Je to moÅ¾nÃ©?!",
+      "year": NaN
+    },
+    {
+      "channel": "dajto",
+      "date": "2025-10-05",
+      "rating": "85%",
+      "start": "06:45",
+      "title": "Susedia",
+      "year": 2019.0
+    },
+    {
+      "channel": "dajto",
+      "date": "2025-10-05",
+      "rating": "85%",
+      "start": "07:20",
+      "title": "Susedia",
+      "year": 2019.0
+    },
+    {
+      "channel": "dajto",
+      "date": "2025-10-05",
+      "rating": "64%",
+      "start": "08:00",
+      "title": "Kredenc",
+      "year": 2017.0
+    },
+    {
+      "channel": "dajto",
+      "date": "2025-10-05",
+      "rating": "56%",
+      "start": "09:05",
+      "title": "PartiÄka",
+      "year": NaN
+    },
+    {
+      "channel": "dajto",
+      "date": "2025-10-05",
+      "rating": "77%",
+      "start": "09:40",
+      "title": "HornÃ¡ DolnÃ¡16",
+      "year": 2022.0
+    },
+    {
+      "channel": "dajto",
+      "date": "2025-10-05",
+      "rating": "71%",
+      "start": "10:50",
+      "title": "Dva a pol chlapa14",
+      "year": 2007.0
+    },
+    {
+      "channel": "dajto",
+      "date": "2025-10-05",
+      "rating": "71%",
+      "start": "11:25",
+      "title": "Dva a pol chlapa15",
+      "year": 2007.0
+    },
+    {
+      "channel": "dajto",
+      "date": "2025-10-05",
+      "rating": "71%",
+      "start": "11:55",
+      "title": "Dva a pol chlapa16",
+      "year": 2007.0
+    },
+    {
+      "channel": "dajto",
+      "date": "2025-10-05",
+      "rating": "71%",
+      "start": "12:15",
+      "title": "Dva a pol chlapa18",
+      "year": 2007.0
+    },
+    {
+      "channel": "dajto",
+      "date": "2025-10-05",
+      "rating": "68%",
+      "start": "13:00",
+      "title": "TeÃ³ria veÄ¾kÃ©ho tresku21",
+      "year": 2015.0
+    },
+    {
+      "channel": "dajto",
+      "date": "2025-10-05",
+      "rating": "68%",
+      "start": "13:25",
+      "title": "TeÃ³ria veÄ¾kÃ©ho tresku22",
+      "year": 2015.0
+    },
+    {
+      "channel": "dajto",
+      "date": "2025-10-05",
+      "rating": "68%",
+      "start": "13:50",
+      "title": "TeÃ³ria veÄ¾kÃ©ho tresku23",
+      "year": 2015.0
+    },
+    {
+      "channel": "dajto",
+      "date": "2025-10-05",
+      "rating": "62%",
+      "start": "14:20",
+      "title": "TeÃ³ria veÄ¾kÃ©ho tresku24",
+      "year": 2015.0
+    },
+    {
+      "channel": "dajto",
+      "date": "2025-10-05",
+      "rating": "68%",
+      "start": "14:45",
+      "title": "TeÃ³ria veÄ¾kÃ©ho tresku1",
+      "year": 2016.0
+    },
+    {
+      "channel": "dajto",
+      "date": "2025-10-05",
+      "rating": "68%",
+      "start": "15:05",
+      "title": "TeÃ³ria veÄ¾kÃ©ho tresku2",
+      "year": 2016.0
+    },
+    {
+      "channel": "dajto",
+      "date": "2025-10-05",
+      "rating": "71%",
+      "start": "15:30",
+      "title": "Priatelia14",
+      "year": 2001.0
+    },
+    {
+      "channel": "dajto",
+      "date": "2025-10-05",
+      "rating": "71%",
+      "start": "16:00",
+      "title": "Priatelia15",
+      "year": 2001.0
+    },
+    {
+      "channel": "dajto",
+      "date": "2025-10-05",
+      "rating": "71%",
+      "start": "16:30",
+      "title": "Dva a pol chlapa19",
+      "year": 2007.0
+    },
+    {
+      "channel": "dajto",
+      "date": "2025-10-05",
+      "rating": "72%",
+      "start": "17:00",
+      "title": "Dva a pol chlapa1",
+      "year": 2008.0
+    },
+    {
+      "channel": "dajto",
+      "date": "2025-10-05",
+      "rating": "77%",
+      "start": "17:25",
+      "title": "2 baby na mizine1",
+      "year": 2013.0
+    },
+    {
+      "channel": "dajto",
+      "date": "2025-10-05",
+      "rating": "75%",
+      "start": "17:55",
+      "title": "2 baby na mizine2",
+      "year": 2013.0
+    },
+    {
+      "channel": "dajto",
+      "date": "2025-10-05",
+      "rating": "80%",
+      "start": "18:25",
+      "title": "HornÃ¡ DolnÃ¡1",
+      "year": 2015.0
+    },
+    {
+      "channel": "dajto",
+      "date": "2025-10-05",
+      "rating": "85%",
+      "start": "19:35",
+      "title": "Susedia",
+      "year": 2019.0
+    },
+    {
+      "channel": "dajto",
+      "date": "2025-10-05",
+      "rating": "78%",
+      "start": "20:30",
+      "title": "SmrtonosnÃ¡ zbraÅ 4",
+      "year": 1998.0
+    },
+    {
+      "channel": "dajto",
+      "date": "2025-10-05",
+      "rating": "66%",
+      "start": "23:05",
+      "title": "GÃ³Ã³Ã³l!",
+      "year": NaN
+    },
+    {
+      "channel": "dajto",
+      "date": "2025-10-05",
+      "rating": "76%",
+      "start": "00:05",
+      "title": "PolicajnÃ¡ akadÃ©mia 4",
+      "year": 1987.0
+    },
+    {
+      "channel": "dajto",
+      "date": "2025-10-05",
+      "rating": "64%",
+      "start": "01:20",
+      "title": "Å portovÃ© noviny",
+      "year": NaN
+    },
+    {
+      "channel": "dajto",
+      "date": "2025-10-05",
+      "rating": "85%",
+      "start": "01:35",
+      "title": "Susedia",
+      "year": 2019.0
+    },
+    {
+      "channel": "dajto",
+      "date": "2025-10-05",
+      "rating": "77%",
+      "start": "02:15",
+      "title": "HornÃ¡ DolnÃ¡16",
+      "year": 2022.0
+    },
+    {
+      "channel": "dajto",
+      "date": "2025-10-05",
+      "rating": "61%",
+      "start": "03:10",
+      "title": "Smiechoty",
+      "year": NaN
+    },
+    {
+      "channel": "dajto",
+      "date": "2025-10-05",
+      "rating": "71%",
+      "start": "04:20",
+      "title": "Oggy a Å¡vÃ¡by",
+      "year": 2021.0
+    },
+    {
+      "channel": "prima-sk",
+      "date": "2025-10-05",
+      "rating": "57%",
+      "start": "06:35",
+      "title": "VÃ¡Å¡ prima receptÃ¡Å",
+      "year": NaN
+    },
+    {
+      "channel": "prima-sk",
+      "date": "2025-10-05",
+      "rating": "54%",
+      "start": "07:35",
+      "title": "Libovky Pepy LibickÃ©ho",
+      "year": NaN
+    },
+    {
+      "channel": "prima-sk",
+      "date": "2025-10-05",
+      "rating": "73%",
+      "start": "07:50",
+      "title": "Show Jana Krause",
+      "year": NaN
+    },
+    {
+      "channel": "prima-sk",
+      "date": "2025-10-05",
+      "rating": "82%",
+      "start": "08:55",
+      "title": "SluneÄnÃ¡19",
+      "year": 2020.0
+    },
+    {
+      "channel": "prima-sk",
+      "date": "2025-10-05",
+      "rating": "60%",
+      "start": "10:20",
+      "title": "Cesty domÅ¯26",
+      "year": 2014.0
+    },
+    {
+      "channel": "prima-sk",
+      "date": "2025-10-05",
+      "rating": "67%",
+      "start": "11:40",
+      "title": "ReceptÃ¡Å prima nÃ¡padÅ¯",
+      "year": NaN
+    },
+    {
+      "channel": "prima-sk",
+      "date": "2025-10-05",
+      "rating": "70%",
+      "start": "12:25",
+      "title": "VychytÃ¡vky LÃ¡di HruÅ¡ky",
+      "year": NaN
+    },
+    {
+      "channel": "prima-sk",
+      "date": "2025-10-05",
+      "rating": "83%",
+      "start": "13:00",
+      "title": "SluneÄnÃ¡20",
+      "year": 2020.0
+    },
+    {
+      "channel": "prima-sk",
+      "date": "2025-10-05",
+      "rating": "60%",
+      "start": "14:25",
+      "title": "Cesty domÅ¯27",
+      "year": 2014.0
+    },
+    {
+      "channel": "prima-sk",
+      "date": "2025-10-05",
+      "rating": "67%",
+      "start": "15:35",
+      "title": "MÃ¡me rÃ¡di Äesko",
+      "year": NaN
+    },
+    {
+      "channel": "prima-sk",
+      "date": "2025-10-05",
+      "rating": "60%",
+      "start": "17:25",
+      "title": "VIP ProstÅeno!",
+      "year": NaN
+    },
+    {
+      "channel": "prima-sk",
+      "date": "2025-10-05",
+      "rating": "88%",
+      "start": "19:00",
+      "title": "Polda5",
+      "year": 2016.0
+    },
+    {
+      "channel": "prima-sk",
+      "date": "2025-10-05",
+      "rating": "87%",
+      "start": "20:15",
+      "title": "Polda6",
+      "year": 2016.0
+    },
+    {
+      "channel": "prima-sk",
+      "date": "2025-10-05",
+      "rating": "70%",
+      "start": "21:25",
+      "title": "ZrÃ¡dci",
+      "year": NaN
+    },
+    {
+      "channel": "prima-sk",
+      "date": "2025-10-05",
+      "rating": "60%",
+      "start": "22:55",
+      "title": "ZrÃ¡dci: Ze zÃ¡hrobÃ­",
+      "year": NaN
+    },
+    {
+      "channel": "prima-sk",
+      "date": "2025-10-05",
+      "rating": "67%",
+      "start": "23:35",
+      "title": "ReceptÃ¡Å prima nÃ¡padÅ¯",
+      "year": NaN
+    },
+    {
+      "channel": "prima-sk",
+      "date": "2025-10-05",
+      "rating": "70%",
+      "start": "00:20",
+      "title": "VychytÃ¡vky LÃ¡di HruÅ¡ky",
+      "year": NaN
+    },
+    {
+      "channel": "prima-sk",
+      "date": "2025-10-05",
+      "rating": "73%",
+      "start": "00:50",
+      "title": "Show Jana Krause",
+      "year": NaN
+    },
+    {
+      "channel": "prima-sk",
+      "date": "2025-10-05",
+      "rating": "60%",
+      "start": "01:40",
+      "title": "VIP ProstÅeno!",
+      "year": NaN
+    },
+    {
+      "channel": "prima-sk",
+      "date": "2025-10-05",
+      "rating": "82%",
+      "start": "02:50",
+      "title": "SluneÄnÃ¡19",
+      "year": 2020.0
+    },
+    {
+      "channel": "prima-sk",
+      "date": "2025-10-05",
+      "rating": "60%",
+      "start": "03:55",
+      "title": "Cesty domÅ¯26",
+      "year": 2014.0
+    },
+    {
+      "channel": "prima-sk",
+      "date": "2025-10-05",
+      "rating": "56%",
+      "start": "04:55",
+      "title": "Nikdo nenÃ­ dokonalÃ½",
+      "year": NaN
+    },
+    {
+      "channel": "markiza-krimi",
+      "date": "2025-10-05",
+      "rating": "66%",
+      "start": "05:20",
+      "title": "PolicajnÃ© prÃ­pady",
+      "year": NaN
+    },
+    {
+      "channel": "markiza-krimi",
+      "date": "2025-10-05",
+      "rating": "66%",
+      "start": "06:05",
+      "title": "PolicajnÃ© prÃ­pady",
+      "year": NaN
+    },
+    {
+      "channel": "markiza-krimi",
+      "date": "2025-10-05",
+      "rating": "66%",
+      "start": "06:50",
+      "title": "PolicajnÃ© prÃ­pady",
+      "year": NaN
+    },
+    {
+      "channel": "markiza-krimi",
+      "date": "2025-10-05",
+      "rating": "66%",
+      "start": "07:35",
+      "title": "PolicajnÃ© prÃ­pady",
+      "year": NaN
+    },
+    {
+      "channel": "markiza-krimi",
+      "date": "2025-10-05",
+      "rating": "60%",
+      "start": "08:20",
+      "title": "V mene zÃ¡kona",
+      "year": NaN
+    },
+    {
+      "channel": "markiza-krimi",
+      "date": "2025-10-05",
+      "rating": "80%",
+      "start": "09:10",
+      "title": "Å pecialisti21",
+      "year": 2019.0
+    },
+    {
+      "channel": "markiza-krimi",
+      "date": "2025-10-05",
+      "rating": "79%",
+      "start": "09:55",
+      "title": "Å pecialisti22",
+      "year": 2019.0
+    },
+    {
+      "channel": "markiza-krimi",
+      "date": "2025-10-05",
+      "rating": "82%",
+      "start": "10:55",
+      "title": "VraÅ¾dy v raji2",
+      "year": 2021.0
+    },
+    {
+      "channel": "markiza-krimi",
+      "date": "2025-10-05",
+      "rating": "76%",
+      "start": "11:45",
+      "title": "VraÅ¾dy v raji3",
+      "year": 2021.0
+    },
+    {
+      "channel": "markiza-krimi",
+      "date": "2025-10-05",
+      "rating": "78%",
+      "start": "12:55",
+      "title": "VraÅ¾dy v raji4",
+      "year": 2021.0
+    },
+    {
+      "channel": "markiza-krimi",
+      "date": "2025-10-05",
+      "rating": "74%",
+      "start": "14:30",
+      "title": "SleÄna MarplovÃ¡2",
+      "year": 2007.0
+    },
+    {
+      "channel": "markiza-krimi",
+      "date": "2025-10-05",
+      "rating": "77%",
+      "start": "16:30",
+      "title": "PolÃ­cia Chicago2",
+      "year": 2015.0
+    },
+    {
+      "channel": "markiza-krimi",
+      "date": "2025-10-05",
+      "rating": "77%",
+      "start": "17:20",
+      "title": "PolÃ­cia Chicago3",
+      "year": 2015.0
+    },
+    {
+      "channel": "markiza-krimi",
+      "date": "2025-10-05",
+      "rating": "77%",
+      "start": "18:20",
+      "title": "Blanca3",
+      "year": 2023.0
+    },
+    {
+      "channel": "markiza-krimi",
+      "date": "2025-10-05",
+      "rating": "80%",
+      "start": "19:40",
+      "title": "Blanca4",
+      "year": 2023.0
+    },
+    {
+      "channel": "markiza-krimi",
+      "date": "2025-10-05",
+      "rating": "80%",
+      "start": "20:55",
+      "title": "Å pecialisti23",
+      "year": 2019.0
+    },
+    {
+      "channel": "markiza-krimi",
+      "date": "2025-10-05",
+      "rating": "79%",
+      "start": "21:55",
+      "title": "Å pecialisti24",
+      "year": 2019.0
+    },
+    {
+      "channel": "markiza-krimi",
+      "date": "2025-10-05",
+      "rating": "77%",
+      "start": "23:00",
+      "title": "PolÃ­cia Chicago2",
+      "year": 2015.0
+    },
+    {
+      "channel": "markiza-krimi",
+      "date": "2025-10-05",
+      "rating": "77%",
+      "start": "00:00",
+      "title": "PolÃ­cia Chicago3",
+      "year": 2015.0
+    },
+    {
+      "channel": "markiza-krimi",
+      "date": "2025-10-05",
+      "rating": "80%",
+      "start": "00:40",
+      "title": "Å pecialisti23",
+      "year": 2019.0
+    },
+    {
+      "channel": "markiza-krimi",
+      "date": "2025-10-05",
+      "rating": "79%",
+      "start": "01:25",
+      "title": "Å pecialisti24",
+      "year": 2019.0
+    },
+    {
+      "channel": "markiza-krimi",
+      "date": "2025-10-05",
+      "rating": "77%",
+      "start": "02:15",
+      "title": "Blanca3",
+      "year": 2023.0
+    },
+    {
+      "channel": "markiza-krimi",
+      "date": "2025-10-05",
+      "rating": "80%",
+      "start": "03:10",
+      "title": "Blanca4",
+      "year": 2023.0
+    },
+    {
+      "channel": "markiza-krimi",
+      "date": "2025-10-05",
+      "rating": "63%",
+      "start": "04:05",
+      "title": "112",
+      "year": NaN
+    }
+  ]
+}

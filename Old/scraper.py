@@ -1,4 +1,4 @@
-import requests
+from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import re
 import os
@@ -12,9 +12,7 @@ filename = "shows.csv"
 def scrape(url: str) -> pd.DataFrame:
     collected_shows = []
 
-    response = requests.get(url)
-    response.raise_for_status()  # Raise an exception for bad status codes
-    html = response.text
+    html = urlopen(url)
 
     soup = BeautifulSoup(html, 'lxml')
 
@@ -31,14 +29,11 @@ def scrape(url: str) -> pd.DataFrame:
     for film in zip(prog_names, time):
         # print(film[1].get_text(strip=True), " ", film[0].get_text(strip=True), end='\n')
 
-        detail_page_response = requests.get('https://tv-program.sk' + film[0]['href'])
-        detail_page_response.raise_for_status()
-        detail_page = BeautifulSoup(detail_page_response.text, 'lxml')
+        detail_page_html = urlopen('https://tv-program.sk' + film[0]['href'])
+        detail_page = BeautifulSoup(detail_page_html, 'lxml')
 
         show_info = detail_page.find("div", {"class": "adspace-program-detail"})
         year = None
-        rating_percentage = None
-        
         for i in show_info.find_all("span", {"class": "text-muted"}):
             regex_match = re.match(r"^\d{4}$", i.get_text(strip=True))
             if regex_match:

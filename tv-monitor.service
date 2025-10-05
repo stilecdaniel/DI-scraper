@@ -1,0 +1,19 @@
+[Unit]
+Description=TV Program Monitor API Service
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/tv-monitor
+Environment=PYTHONPATH=/home/ubuntu/tv-monitor
+ExecStart=/usr/bin/python3 /home/ubuntu/tv-monitor/tv_monitor_api.py
+Restart=always
+RestartSec=10
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
