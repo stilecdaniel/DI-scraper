@@ -6,7 +6,7 @@
  */
 async function fetchRepoData() {
 
-    const showsRepoUrl = "https://api.github.com/repos/stilecdaniel/DI-scraper/contents/shows.csv";
+    const showsRepoUrl = "https://api.github.com/repos/stilecdaniel/DI-scraper/contents/scraper/shows.csv";
 
     try {
         const response = await fetch(showsRepoUrl);
