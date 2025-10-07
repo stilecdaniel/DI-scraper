@@ -1,0 +1,71 @@
+from urllib.request import urlopen
+from bs4 import BeautifulSoup
+import re
+import os
+import pandas as pd
+from datetime import date
+
+urls = ['https://tv-program.sk/dajto/', 'https://tv-program.sk/prima-sk/', 'https://tv-program.sk/markiza-krimi/']
+filename = "shows.csv"
+
+
+def scrape(url: str) -> pd.DataFrame:
+    collected_shows = []
+
+    html = urlopen(url)
+
+    soup = BeautifulSoup(html, 'lxml')
+
+    # list of tv shows
+    programme_list = soup.find("div", {"class": "programme-list"})
+
+    # tv shows time schedule
+    time = programme_list.find_all("time", {"class": "programme-list__time"})
+
+    # tv shows names
+    prog_names = programme_list.find_all("a", {"class": "programme-list__title"})
+    # print(time, prog_names)
+
+    for film in zip(prog_names, time):
+        # print(film[1].get_text(strip=True), " ", film[0].get_text(strip=True), end='\n')
+
+        detail_page_html = urlopen('https://tv-program.sk' + film[0]['href'])
+        detail_page = BeautifulSoup(detail_page_html, 'lxml')
+
+        show_info = detail_page.find("div", {"class": "adspace-program-detail"})
+        year = None
+        season = None
+        episode = None
+        for i in show_info.find_all("span", {"class": "text-muted"}):
+            regex_match = re.match(r"^\d{4}$", i.get_text(strip=True))
+            if regex_match:
+                year = regex_match.group(0)
+
+        page_title_container = detail_page.find("h1", {"class": "page__title"})
+        if(page_title_container):
+            heading = page_title_container.find("span", {"class": "text-muted fs-medium"})
+            if(heading):
+                season_episode = heading.get_text(strip=True)
+                main_string = season_episode.split("-")[0].strip()
+                parts = [part.strip() for part in main_string.split("/")]
+                season = parts[0]
+                episode = parts[1]
+            
+        show_rating_container = detail_page.find("div", {"class": "text-center bg-warning mx-n3 mx-lg-n4 px-3 px-lg-4 py-3"})
+        if(show_rating_container):
+            rating_percentage_container = show_rating_container.find("div", {"class": "h3 mb-0"})
+            if(rating_percentage_container):
+                rating_percentage = rating_percentage_container.get_text(strip=True)
+
+        collected_shows.append(
+            {"channel": url.rstrip("/").split("/")[-1], "date": date.today(), 
+             "start": film[1].get_text(strip=True), "title": film[0].get_text(strip=True), 
+             "rating": rating_percentage, "year": year, "season": season, "episode": episode})
+    return pd.DataFrame(collected_shows)
+
+
+if __name__ == "__main__":
+
+    for url in urls:
+        df = scrape(url)
+        df.to_csv(filename, mode="a", header=not os.path.exists(filename), index=False, encoding="utf-8")
