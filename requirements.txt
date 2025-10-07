@@ -1,7 +1,0 @@
-beautifulsoup4
-lxml
-pandas
-requests
-flask
-flask-cors
-schedule
