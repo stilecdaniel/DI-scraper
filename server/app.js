@@ -1,6 +1,7 @@
 const express = require('express');
 const fetchRepoData = require('./utils/fetchRepoData.js');
 const parseCSV = require('./utils/parseCSV.js');
+const getCurrentlyPlayingShow = require('./utils/getCurrentlyPlayingShow');
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -11,54 +12,70 @@ app.use((req, res, next) => {
         'Cache-Control': 'no-cache',
         'Connection': 'keep-alive'
     });
+    res.flushHeaders();
     next();
 });
 
-let initData;
+let channelData = {};
 
 async function initializeData() {
     try {
         const scraperDataObject = await fetchRepoData();
-        initData = await parseCSV(scraperDataObject.content);
-    } catch (e) {
-        console.error("Failed to initialize show data: " + e);
+        const parsedData = await parseCSV(scraperDataObject.content);
+        const todayString = new Date().toISOString().slice(0, 10);
+
+        const todayData = parsedData.filter(show => show.date === todayString);
+
+        channelData = {
+            dajto: todayData.filter(show => show.channel === "dajto"),
+            'markiza-krimi': todayData.filter(show => show.channel === "markiza-krimi"),
+            'prima-sk': todayData.filter(show => show.channel === "prima-sk")
+        };
+    } catch (error) {
+        console.error("Failed to initialize show data:", error);
     }
 }
 
-function streamData(res) {
-    setInterval(() => {
-        res.write("data: test\n\n");
-    }, 1000);
+function streamData(getDataFn, res) {
+    const interval = setInterval(() => {
+        const data = getDataFn();
+        res.write(data + "\n\n");
+    }, 3000);
+
+    res.on('close', () => {
+        clearInterval(interval);
+        res.end();
+    });
 }
 
-app.get('/dajto', (req, res) => {
+function createChannelStreamHandler(channel) {
+    return (req, res) => {
+        if (!channelData[channel]) {
+            res.status(503).send("Data not initialized");
+            return;
+        }
+        streamData(() => getCurrentlyPlayingShow(channelData[channel]), res);
+    };
+}
 
-    if (!initData) {
-        res.status(503).send("Data not initialized on server");
-        return;
-    }
-    streamData(res);
-})
-
-app.get('/prima-sk', (req, res) => {
-
-    if (!initData) {
-        res.status(503).send("Data not initialized on server");
-        return;
-    }
-    streamData(res);
-})
-
-app.get('/markiza-krimi', (req, res) => {
-
-    if (!initData()) {
-        res.status(503).send("Data not initialized on server");
-        return;
-    }
-    streamData(res);
-})
+app.get('/dajto', createChannelStreamHandler('dajto'));
+app.get('/prima-sk', createChannelStreamHandler('prima-sk'));
+app.get('/markiza-krimi', createChannelStreamHandler('markiza-krimi'));
 
 app.listen(port, async () => {
-    await initializeData();
-    console.log(`\nServer is running on http://localhost:${port}`);
+    const initRetryTimes = 5;
+
+    for (let i = 0; i < initRetryTimes; i++) {
+        try {
+            await initializeData();
+            console.log(`Server is running on http://localhost:${port}`);
+            break;
+        } catch (e) {
+            console.error("Failed to initialize data, attempt: " + (i + 1) + "error: " + e);
+            if (i === initRetryTimes - 1) {
+                console.error("Cant initialize server data, shutting down");
+                process.exit(1);
+            }
+        }
+    }
 });
