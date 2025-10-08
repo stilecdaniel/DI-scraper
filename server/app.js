@@ -36,11 +36,11 @@ async function initializeData() {
     }
 }
 
-function streamData(getDataFn, interval, res) {
+function streamData(getDataFn, res) {
     const intervalId = setInterval(() => {
         const data = getDataFn();
         res.write(data + "\n\n");
-    }, interval);
+    }, 5 * 60 * 1000);
 
     res.on('close', () => {
         clearInterval(intervalId);
@@ -55,18 +55,13 @@ function createChannelStreamHandler(channel) {
             return;
         }
 
-        let interval = parseInt(req.params.interval, 10);
-        if (isNaN(interval) || interval < 1000) {
-            interval = 1000;
-        }
-
-        streamData(() => getCurrentlyPlayingShow(channelData[channel]), interval, res);
+        streamData(() => getCurrentlyPlayingShow(channelData[channel]), res);
     };
 }
 
-app.get('/dajto{/:interval}', createChannelStreamHandler('dajto'));
-app.get('/prima-sk{/:interval}', createChannelStreamHandler('prima-sk'));
-app.get('/markiza-krimi{/:interval}', createChannelStreamHandler('markiza-krimi'));
+app.get('/dajto/', createChannelStreamHandler('dajto'));
+app.get('/prima-sk/', createChannelStreamHandler('prima-sk'));
+app.get('/markiza-krimi/', createChannelStreamHandler('markiza-krimi'));
 
 app.use((req, res, next) => {
     res.status(404).write('Not found');
