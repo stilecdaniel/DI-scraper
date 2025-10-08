@@ -36,14 +36,14 @@ async function initializeData() {
     }
 }
 
-function streamData(getDataFn, res) {
-    const interval = setInterval(() => {
+function streamData(getDataFn, interval, res) {
+    const intervalId = setInterval(() => {
         const data = getDataFn();
         res.write(data + "\n\n");
-    }, 3000);
+    }, interval);
 
     res.on('close', () => {
-        clearInterval(interval);
+        clearInterval(intervalId);
         res.end();
     });
 }
@@ -54,13 +54,23 @@ function createChannelStreamHandler(channel) {
             res.status(503).send("Data not initialized");
             return;
         }
-        streamData(() => getCurrentlyPlayingShow(channelData[channel]), res);
+
+        let interval = parseInt(req.params.interval, 10);
+        if (isNaN(interval) || interval < 1000) {
+            interval = 1000;
+        }
+
+        streamData(() => getCurrentlyPlayingShow(channelData[channel]), interval, res);
     };
 }
 
-app.get('/dajto', createChannelStreamHandler('dajto'));
-app.get('/prima-sk', createChannelStreamHandler('prima-sk'));
-app.get('/markiza-krimi', createChannelStreamHandler('markiza-krimi'));
+app.get('/dajto{/:interval}', createChannelStreamHandler('dajto'));
+app.get('/prima-sk{/:interval}', createChannelStreamHandler('prima-sk'));
+app.get('/markiza-krimi{/:interval}', createChannelStreamHandler('markiza-krimi'));
+
+app.use((req, res, next) => {
+    res.status(404).write('Not found');
+});
 
 app.listen(port, async () => {
     const initRetryTimes = 5;
