@@ -4,7 +4,7 @@ const parseCSV = require('./utils/parseCSV.js');
 const getCurrentlyPlayingShow = require('./utils/getCurrentlyPlayingShow');
 
 const app = express();
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 
 app.use((req, res, next) => {
     res.set({
@@ -17,7 +17,12 @@ app.use((req, res, next) => {
 });
 
 let channelData = {};
+const interval = 5 * 60 * 1000;
 
+/**
+ * Initializes the three stations data into an object with three properties, one for each channel
+ * @returns {Promise<void>} The stations data promise
+ */
 async function initializeData() {
     try {
         const scraperDataObject = await fetchRepoData();
@@ -36,11 +41,19 @@ async function initializeData() {
     }
 }
 
+/**
+ * Sends the chosen data to the client in an interval
+ * @param getDataFn function that returns the chosen data to write to the client in the format that should be sent
+ * @param res
+ */
 function streamData(getDataFn, res) {
+    const data = getDataFn();
+    res.write(data + "\n\n");
+
     const intervalId = setInterval(() => {
         const data = getDataFn();
         res.write(data + "\n\n");
-    }, 5 * 60 * 1000);
+    }, interval);
 
     res.on('close', () => {
         clearInterval(intervalId);
@@ -48,20 +61,33 @@ function streamData(getDataFn, res) {
     });
 }
 
-function createChannelStreamHandler(channel) {
+/**
+ * Handles the data streaming, what channel should be streamed or if viewership should be streamed instead
+ * @param channel Which channels currently playing program should be streamed, if showViewership is true, this argument is disregarded
+ * @param showViewership If set to true, it will not stream the currently playing program but the viewership
+ * @returns {(function(*, *): void)|*}
+ */
+function createChannelStreamHandler(channel, showViewership) {
     return (req, res) => {
-        if (!channelData[channel]) {
-            res.status(503).send("Data not initialized");
-            return;
+        if (!showViewership) {
+            if (!channelData[channel]) {
+                res.status(503).send("Data not initialized");
+                return;
+            }
+            streamData(() => getCurrentlyPlayingShow(channelData[channel]), res);
+        } else {
+            streamData(() => (Math.floor(Math.random() * (50000 - 500 + 1)) + 500), res);
         }
-
-        streamData(() => getCurrentlyPlayingShow(channelData[channel]), res);
-    };
+    }
 }
 
-app.get('/dajto/', createChannelStreamHandler('dajto'));
-app.get('/prima-sk/', createChannelStreamHandler('prima-sk'));
-app.get('/markiza-krimi/', createChannelStreamHandler('markiza-krimi'));
+app.get('/dajto/', createChannelStreamHandler('dajto', false));
+app.get('/prima-sk/', createChannelStreamHandler('prima-sk', false));
+app.get('/markiza-krimi/', createChannelStreamHandler('markiza-krimi', false));
+
+app.get('/dajto/viewership/', createChannelStreamHandler('dajto', true));
+app.get('/prima-sk/viewership/', createChannelStreamHandler('prima-sk', true));
+app.get('/markiza-krimi/viewership/', createChannelStreamHandler('markiza-krimi', true));
 
 app.use((req, res, next) => {
     res.status(404).write('Not found');
