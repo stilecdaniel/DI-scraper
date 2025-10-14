@@ -48,11 +48,11 @@ async function initializeData() {
  */
 function streamData(getDataFn, res) {
     const data = getDataFn();
-    res.write(data + "\n\n");
+    res.write("data: " + data + "\n\n");
 
     const intervalId = setInterval(() => {
         const data = getDataFn();
-        res.write(data + "\n\n");
+        res.write("data: " + data + "\n\n");
     }, interval);
 
     res.on('close', () => {
