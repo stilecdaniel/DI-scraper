@@ -2,22 +2,13 @@ const express = require('express');
 const fetchRepoData = require('./utils/fetchRepoData.js');
 const parseCSV = require('./utils/parseCSV.js');
 const getCurrentlyPlayingShow = require('./utils/getCurrentlyPlayingShow');
+const generateViewership = require('./utils/generateViewership');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use((req, res, next) => {
-    res.set({
-        'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache',
-        'Connection': 'keep-alive'
-    });
-    res.flushHeaders();
-    next();
-});
-
 let channelData = {};
-const interval = 5 * 60 * 1000;
+const interval = 5 * 60 * 1;
 
 /**
  * Initializes the three stations data into an object with three properties, one for each channel
@@ -69,18 +60,46 @@ function streamData(getDataFn, res) {
  */
 function createChannelStreamHandler(channel, showViewership) {
     return (req, res) => {
+        res.set({
+            'Content-Type': 'text/event-stream',
+            'Cache-Control': 'no-cache',
+            'Connection': 'keep-alive'
+        });
+        res.flushHeaders();
+
         if (!showViewership) {
             if (!channelData[channel]) {
                 res.status(503).send("Data not initialized");
                 return;
             }
-            streamData(() => getCurrentlyPlayingShow(channelData[channel]), res);
+            streamData(() => (getCurrentlyPlayingShow(channelData[channel])), res);
         } else {
-            streamData(() => (Math.floor(Math.random() * (50000 - 500 + 1)) + 500), res);
+            streamData(() => (generateViewership(channelData, channel)), res);
         }
     }
 }
 
+function getChannelCurrentData(channel, showViewership) {
+    return (req, res) => {
+        res.set({
+            'Content-Type': 'application/json',
+        });
+
+        if (!showViewership) {
+            if (!channelData[channel]) {
+                res.status(503).send("Data not initialized");
+                return;
+            }
+            res.status(200).json(getCurrentlyPlayingShow(channelData[channel]));
+        } else {
+            res.status(200).json(generateViewership(channelData, channel));
+        }
+    }
+}
+
+/**
+ * These endpoints send SSE (Server side events) periodically
+ */
 app.get('/dajto/', createChannelStreamHandler('dajto', false));
 app.get('/prima-sk/', createChannelStreamHandler('prima-sk', false));
 app.get('/markiza-krimi/', createChannelStreamHandler('markiza-krimi', false));
@@ -88,6 +107,18 @@ app.get('/markiza-krimi/', createChannelStreamHandler('markiza-krimi', false));
 app.get('/dajto/viewership/', createChannelStreamHandler('dajto', true));
 app.get('/prima-sk/viewership/', createChannelStreamHandler('prima-sk', true));
 app.get('/markiza-krimi/viewership/', createChannelStreamHandler('markiza-krimi', true));
+
+/**
+ * These endpoints return a single response of the currently playing show or its viewership
+ */
+app.get('/dajto/pull', getChannelCurrentData('dajto', false));
+app.get('/prima-sk/pull', getChannelCurrentData('prima-sk', false));
+app.get('/markiza-krimi/pull', getChannelCurrentData('markiza-krimi', false));
+
+app.get('/dajto/viewership/pull', getChannelCurrentData('dajto', true));
+app.get('/prima-sk/viewership/pull', getChannelCurrentData('prima-sk', true));
+app.get('/markiza-krimi/viewership/pull', getChannelCurrentData('markiza-krimi', true));
+
 
 app.use((req, res, next) => {
     res.status(404).write('Not found');
