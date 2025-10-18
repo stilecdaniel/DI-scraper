@@ -8,7 +8,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 let channelData = {};
-const interval = 5 * 60 * 1;
+const interval = 5 * 60 * 1000;
 
 /**
  * Initializes the three stations data into an object with three properties, one for each channel
