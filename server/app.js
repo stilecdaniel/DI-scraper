@@ -124,7 +124,7 @@ app.use((req, res, next) => {
     res.status(404).write('Not found');
 });
 
-app.listen(port, async () => {
+app.listen(port, '0.0.0.0', async () => {
     const initRetryTimes = 5;
 
     for (let i = 0; i < initRetryTimes; i++) {
