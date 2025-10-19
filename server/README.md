@@ -4,7 +4,7 @@ The server has 12 endpoints in 2 groups, in each group 3 of them will return cur
 and the other 3 return the viewership for the program. The route /pull at the end specifies if the response should be
 a continuous SSE stream or a one time response
 
-## Base server URL: http://63.179.147.89:3000
+## Base server URL: http://3.79.27.222:3000
 
 ## Program data endpoints:
 - /dajto
