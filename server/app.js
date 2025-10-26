@@ -1,8 +1,7 @@
 const express = require('express');
-const fetchRepoData = require('./utils/fetchRepoData.js');
-const parseCSV = require('./utils/parseCSV.js');
 const getCurrentlyPlayingShow = require('./utils/getCurrentlyPlayingShow');
 const generateViewership = require('./utils/generateViewership');
+const scrapeSingleUrl = require('./scraper/scraper');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -11,16 +10,34 @@ let channelData = {};
 const interval = 5 * 60 * 1000;
 
 /**
+ * Fetches the channel data for all channels
+ * @returns {Promise<*[]>}
+ */
+async function fetchScraperData() {
+    let allData = [];
+    for (const url of urls) {
+        const data = await scrapeSingleUrl(url);
+        allData = allData.concat(data);
+    }
+    return allData;
+}
+
+const urls = [
+    'https://tv-program.sk/dajto/',
+    'https://tv-program.sk/prima-sk/',
+    'https://tv-program.sk/markiza-krimi/'
+];
+
+/**
  * Initializes the three stations data into an object with three properties, one for each channel
  * @returns {Promise<void>} The stations data promise
  */
 async function initializeData() {
     try {
-        const scraperDataObject = await fetchRepoData();
-        const parsedData = await parseCSV(scraperDataObject.content);
+        const scraperData = await fetchScraperData();
         const todayString = new Date().toISOString().slice(0, 10);
 
-        const todayData = parsedData.filter(show => show.date === todayString);
+        const todayData = scraperData.filter(show => show.date === todayString);
 
         channelData = {
             dajto: todayData.filter(show => show.channel === "dajto"),
@@ -130,7 +147,7 @@ app.listen(port, '0.0.0.0', async () => {
     for (let i = 0; i < initRetryTimes; i++) {
         try {
             await initializeData();
-            console.log(`Server is running on http://localhost:${port}`);
+            console.log(`Server is running on http://3.79.27.222:${port}`);
             break;
         } catch (e) {
             console.error("Failed to initialize data, attempt: " + (i + 1) + "error: " + e);
