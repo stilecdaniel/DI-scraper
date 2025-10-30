@@ -35,14 +35,11 @@ const urls = [
 async function initializeData() {
     try {
         const scraperData = await fetchScraperData();
-        const todayString = new Date().toISOString().slice(0, 10);
-
-        const todayData = scraperData.filter(show => show.date === todayString);
 
         channelData = {
-            dajto: todayData.filter(show => show.channel === "dajto"),
-            'markiza-krimi': todayData.filter(show => show.channel === "markiza-krimi"),
-            'prima-sk': todayData.filter(show => show.channel === "prima-sk")
+            dajto: scraperData.filter(show => show.channel === "dajto"),
+            'markiza-krimi': scraperData.filter(show => show.channel === "markiza-krimi"),
+            'prima-sk': scraperData.filter(show => show.channel === "prima-sk")
         };
     } catch (error) {
         console.error("Failed to initialize show data:", error);

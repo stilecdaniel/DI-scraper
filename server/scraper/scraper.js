@@ -1,80 +1,108 @@
 const cheerio = require('cheerio');
+const {format, addDays} = require('date-fns');
+
+async function fetchHtml(url) {
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error(`Failed to fetch ${url}: ${response.statusText}`);
+    }
+    return await response.text();
+}
 
 /**
  * Scrapes the channel data from https://tv-program.sk/${channelName}/
- * and returns the object that contains the data
+ * and returns the object that contains the weeks program data
  * @param url
  * @returns {Promise<*[]>}
  */
 async function scrapeSingleUrl(url) {
-    const collectedShows = [];
-
-    const response = await fetch(url);
-    const html = await response.text();
+    const html = await fetchHtml(url);
     const $ = cheerio.load(html);
 
-    const programmeList = $('.programme-list');
+    const dayColumns = $('div.programme-list.bg-light.h-100.d-flex.flex-column.den');
 
-    const times = programmeList.find('time.programme-list__time').toArray();
-    const progNames = programmeList.find('a.programme-list__title').toArray();
+    const detailPromises = [];
 
-    for (let i = 0; i < progNames.length; i++) {
-        const progElement = progNames[i];
-        const timeElement = times[i];
+    dayColumns.each((colIndex, colElem) => {
+        const currentDate = addDays(new Date(), colIndex);
+        const dateString = format(currentDate, 'yyyy-MM-dd');
 
-        const title = $(progElement).text().trim();
-        const start = $(timeElement).text().trim();
-        const href = 'https://tv-program.sk' + $(progElement).attr('href');
+        const timeElements = $(colElem).find('time.programme-list__time').toArray();
+        const progNames = $(colElem).find('a.programme-list__title').toArray();
 
-        const detailResponse = await fetch(href);
-        const detailHtml = await detailResponse.text();
-        const detailPage = cheerio.load(detailHtml);
+        for (let i = 0; i < progNames.length; i++) {
+            const prog = progNames[i];
+            const time = timeElements[i];
+            const showHref = $(prog).attr('href');
+            const detailUrl = 'https://tv-program.sk' + showHref;
 
-        const showInfo = detailPage('div.adspace-program-detail');
+            detailPromises.push(
+                scrapeShowDetails(detailUrl, dateString, $(time).text().trim(), $(prog).text().trim(), url)
+            );
+        }
+    });
 
-        let year = null;
-        showInfo.find('span.text-muted').each((_idx, elem) => {
-            const text = detailPage(elem).text().trim();
-            if (/^\d{4}$/.test(text)) {
-                year = text;
-            }
-        });
+    return await Promise.all(detailPromises);
+}
 
-        let season = null;
-        let episode = null;
-        const pageTitleContainer = detailPage('h1.page__title');
-        if (pageTitleContainer.length) {
-            const heading = pageTitleContainer.find('span.text-muted.fs-medium');
-            if (heading.length) {
-                const seasonEpisode = heading.text().trim();
-                const mainString = seasonEpisode.split('-')[0].trim();
-                const parts = mainString.split('/').map(part => part.trim());
+/**
+ * Helper function to scrape the details for each program item in the column
+ * @param detailUrl url of the program to scrape
+ * @param dateString date of the program
+ * @param startTime start time of the program
+ * @param title programs title
+ * @param channelUrl channel of the program
+ * @returns {Promise<{channel: unknown, date: *, start: *, title: *, rating: null, year: null, season: null, episode: null}>}
+ */
+async function scrapeShowDetails(detailUrl, dateString, startTime, title, channelUrl) {
+    const detailHtml = await fetchHtml(detailUrl);
+    const $$ = cheerio.load(detailHtml);
+
+    const showInfo = $$('div.adspace-program-detail');
+
+    let year = null;
+    showInfo.find('span.text-muted').each((_, el) => {
+        const text = $$(el).text().trim();
+        if (/^\d{4}$/.test(text)) {
+            year = text;
+        }
+    });
+
+    let season = null;
+    let episode = null;
+    const pageTitleContainer = $$('h1.page__title');
+    if (pageTitleContainer.length) {
+        const heading = pageTitleContainer.find('span.text-muted.fs-medium');
+        if (heading.length) {
+            const seasonEpisodeStr = heading.text().trim();
+            const mainString = seasonEpisodeStr.split('-')[0].trim();
+            const parts = mainString.split('/').map(p => p.trim());
+            if (parts.length >= 2) {
                 season = parts[0];
                 episode = parts[1];
             }
         }
-
-        let rating = null;
-        const showRatingContainer = detailPage('div.text-center.bg-warning.mx-n3.mx-lg-n4.px-3.px-lg-4.py-3');
-        if (showRatingContainer.length) {
-            const ratingPercentageContainer = showRatingContainer.find('div.h3.mb-0');
-            if (ratingPercentageContainer.length) {
-                rating = ratingPercentageContainer.text().trim();
-            }
-        }
-
-        collectedShows.push({
-            channel: url.replace(/\/$/, '').split('/').pop(),
-            date: new Date().toISOString().split('T')[0],
-            start,
-            title,
-            rating,
-            year,
-            season,
-            episode
-        });
     }
-    return collectedShows;
+
+    let ratingPercentage = null;
+    const showRatingContainer = $$('div.text-center.bg-warning.mx-n3.mx-lg-n4.px-3.px-lg-4.py-3');
+    if (showRatingContainer.length) {
+        const ratingPercentageContainer = showRatingContainer.find('div.h3.mb-0');
+        if (ratingPercentageContainer.length) {
+            ratingPercentage = ratingPercentageContainer.text().trim();
+        }
+    }
+
+    return {
+        channel: channelUrl.replace(/\/$/, '').split('/').pop(),
+        date: dateString,
+        start: startTime,
+        title: title,
+        rating: ratingPercentage,
+        year: year,
+        season: season,
+        episode: episode,
+    };
 }
 
 module.exports = scrapeSingleUrl;
