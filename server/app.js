@@ -144,7 +144,7 @@ app.listen(port, '0.0.0.0', async () => {
     for (let i = 0; i < initRetryTimes; i++) {
         try {
             await initializeData();
-            console.log(`Server is running on http://3.79.27.222:${port}`);
+            console.log(`Server is running on port ${port}`);
             break;
         } catch (e) {
             console.error("Failed to initialize data, attempt: " + (i + 1) + "error: " + e);

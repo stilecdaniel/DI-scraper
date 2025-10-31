@@ -1,5 +1,5 @@
 const cheerio = require('cheerio');
-const {format, addDays} = require('date-fns');
+const {format, addDays, parse, isValid} = require('date-fns');
 
 async function fetchHtml(url) {
     const response = await fetch(url);
@@ -7,6 +7,14 @@ async function fetchHtml(url) {
         throw new Error(`Failed to fetch ${url}: ${response.statusText}`);
     }
     return await response.text();
+}
+
+function timeToMinutes(timeStr) {
+    const parsedTime = parse(timeStr, 'HH:mm', new Date(0));
+    if (!isValid(parsedTime)) {
+        return null;
+    }
+    return parsedTime.getHours() * 60 + parsedTime.getMinutes();
 }
 
 /**
@@ -20,24 +28,32 @@ async function scrapeSingleUrl(url) {
     const $ = cheerio.load(html);
 
     const dayColumns = $('div.programme-list.bg-light.h-100.d-flex.flex-column.den');
-
     const detailPromises = [];
 
     dayColumns.each((colIndex, colElem) => {
-        const currentDate = addDays(new Date(), colIndex);
-        const dateString = format(currentDate, 'yyyy-MM-dd');
+        let currentDate = addDays(new Date(), colIndex);
+        let prevMinutes = null;
 
         const timeElements = $(colElem).find('time.programme-list__time').toArray();
         const progNames = $(colElem).find('a.programme-list__title').toArray();
 
         for (let i = 0; i < progNames.length; i++) {
+            const startTime = $(timeElements[i]).text().trim();
+            const currentMinutes = timeToMinutes(startTime);
+
+            if (prevMinutes !== null && currentMinutes !== null && currentMinutes < prevMinutes) {
+                currentDate = addDays(currentDate, 1);
+            }
+
+            const dateString = format(currentDate, 'yyyy-MM-dd');
+            prevMinutes = currentMinutes;
+
             const prog = progNames[i];
-            const time = timeElements[i];
             const showHref = $(prog).attr('href');
             const detailUrl = 'https://tv-program.sk' + showHref;
 
             detailPromises.push(
-                scrapeShowDetails(detailUrl, dateString, $(time).text().trim(), $(prog).text().trim(), url)
+                scrapeShowDetails(detailUrl, dateString, startTime, $(prog).text().trim(), url)
             );
         }
     });
